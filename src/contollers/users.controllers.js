@@ -1,5 +1,5 @@
 
-export async function signUp(req, res) {
+export async function getUserData(req, res) {
     try {
         res.send("Rota nao implementada")
     } catch (err) {
@@ -7,7 +7,7 @@ export async function signUp(req, res) {
     }
 }
 
-export async function signIn(req, res) {
+export async function getRanking(req, res) {
     try {
         res.send("Rota nao implementada")
     } catch (err) {
