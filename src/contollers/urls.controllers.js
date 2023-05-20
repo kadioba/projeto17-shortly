@@ -29,10 +29,10 @@ export async function getUrlById(req, res) {
 export async function openShortUrl(req, res) {
     const shortUrl = req.params.shortUrl
     try {
-        const url = await db.query(`SELECT id, url FROM urls WHERE "shortUrl" = $1;`, [shortUrl])
+        const url = await db.query(`SELECT id, url, "userId" FROM urls WHERE "shortUrl" = $1;`, [shortUrl])
         if (url.rowCount === 0) return res.sendStatus(404)
 
-        await db.query(`INSERT INTO visits ("urlId") VALUES ($1)`, [url.rows[0].id])
+        await db.query(`INSERT INTO visits ("urlId", "ownerId") VALUES ($1, $2)`, [url.rows[0].id, url.rows[0].userId])
 
         res.redirect(url.rows[0].url);
 
