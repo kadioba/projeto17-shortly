@@ -27,13 +27,14 @@ export async function signIn(req, res) {
     const { email, password } = req.body
 
     try {
-        const user = await db.query(`SELECT password FROM users WHERE email = $1`, [email])
+        const user = await db.query(`SELECT id, password FROM users WHERE email = $1`, [email])
         if (!user.rows[0]) return res.sendStatus(401)
         console.log(user)
 
         const isPasswordCorrect = bcrypt.compareSync(password, user.rows[0].password)
         if (!isPasswordCorrect) return res.sendStatus(401)
 
+        console.log()
         const token = jwt.sign({ id: user.rows[0].id }, secretKey, { expiresIn: '1h' })
 
         res.status(200).send({ token: token })

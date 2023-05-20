@@ -4,7 +4,7 @@ export async function shortenUrl(req, res) {
     try {
         res.send("Rota nao implementada")
     } catch (err) {
-        res.send(err)
+        res.status(500).send(err)
     }
 }
 
