@@ -34,7 +34,6 @@ export async function signIn(req, res) {
         const isPasswordCorrect = bcrypt.compareSync(password, user.rows[0].password)
         if (!isPasswordCorrect) return res.sendStatus(401)
 
-        console.log()
         const token = jwt.sign({ id: user.rows[0].id }, secretKey, { expiresIn: '1h' })
 
         res.status(200).send({ token: token })

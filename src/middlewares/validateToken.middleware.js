@@ -10,15 +10,15 @@ export default function validateToken(req, res, next) {
     const { authorization } = req.headers
     const token = authorization?.replace("Bearer ", "")
 
-    if (!token) return res.sendStatus(403)
+    if (!token) return res.sendStatus(401)
 
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
-            return res.sendStatus(500)
+            return res.status(401).send("Sessao invalida")
         }
 
         res.locals.userId = decoded.id;
-    })
+        next()
 
-    next()
+    })
 }
