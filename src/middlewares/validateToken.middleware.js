@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const secretKey = process.env.JWT_SECRET
+const secretKey = "shortlyapi"
 
 export default function validateToken(req, res, next) {
 
