@@ -6,7 +6,7 @@ export async function getUserData(req, res) {
     console.log(userId)
     try {
         const user = await db.query(`SELECT users.id AS id, users.name AS name, COUNT(DISTINCT u.id) AS "visitCountUser",
-        urls.id AS "IdURL", urls."shortUrl" AS "shortUrl", urls.url AS url,
+        urls.id AS "idURL", urls."shortUrl" AS "shortUrl", urls.url AS url,
         COUNT(DISTINCT l.id) AS "linkVisits"
         FROM users
         LEFT JOIN visits u ON u."ownerId" = users.id
@@ -17,7 +17,7 @@ export async function getUserData(req, res) {
 
         const links = user.rows.map(link => {
             const linkData = {
-                id: link.idUrl,
+                id: link.idURL,
                 shortUrl: link.shortUrl,
                 url: link.url,
                 visitCount: link.linkVisits
