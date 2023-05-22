@@ -4,7 +4,11 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 
 dotenv.config()
-const secretKey = process.env.JWT_SECRET
+
+/* const secretKey = process.env.JWT_SECRET
+ */
+
+const secretKey = "shortlyapi"
 
 export async function signUp(req, res) {
 
