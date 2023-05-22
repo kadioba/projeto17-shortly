@@ -20,6 +20,8 @@ export async function shortenUrl(req, res) {
 export async function getUrlById(req, res) {
     try {
         const url = await db.query(`SELECT id, "shortUrl", url FROM urls WHERE id = $1`, [req.params.id])
+        if (url.rowCount === 0) return res.sendStatus(404)
+
         res.status(200).send(url.rows[0])
     } catch (err) {
         res.status(500).send(err)
@@ -47,6 +49,7 @@ export async function deleteUrl(req, res) {
         if (url.rowCount === 0) return res.sendStatus(404)
         if (res.locals.userId !== url.rows[0].userId) return res.sendStatus(401)
 
+        await db.query(`DELETE FROM visits WHERE "urlId" = $1`, [url.rows[0].id])
         await db.query(`DELETE FROM urls WHERE id = $1 AND "userId" = $2;`, [url.rows[0].id, url.rows[0].userId])
         res.sendStatus(204)
     } catch (err) {

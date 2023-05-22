@@ -2,13 +2,16 @@ import { db } from "../database/database.connection.js"
 
 export async function getUserData(req, res) {
     const { userId } = res.locals
+
+    console.log(userId)
     try {
-        const user = await db.query(`SELECT users.id AS id, users.name AS name, COUNT(DISTINCT u.id) AS "visitCountUser", urls.id AS "IdURL", urls."shortUrl" AS "shortUrl", urls.url AS url,
+        const user = await db.query(`SELECT users.id AS id, users.name AS name, COUNT(DISTINCT u.id) AS "visitCountUser",
+        urls.id AS "IdURL", urls."shortUrl" AS "shortUrl", urls.url AS url,
         COUNT(DISTINCT l.id) AS "linkVisits"
         FROM users
-        JOIN visits u ON u."ownerId" = users.id
-        JOIN urls ON urls."userId" = users.id
-        JOIN visits l ON l."urlId" = urls.id
+        LEFT JOIN visits u ON u."ownerId" = users.id
+        LEFT JOIN urls ON urls."userId" = users.id
+        LEFT JOIN visits l ON l."urlId" = urls.id
         WHERE users.id = $1
         GROUP BY users.id, urls.id;`, [userId])
 
@@ -21,6 +24,8 @@ export async function getUserData(req, res) {
             }
             return linkData
         })
+
+        console.log(user)
 
         res.status(200).send({
             id: user.rows[0].id,

@@ -18,7 +18,7 @@ export async function signUp(req, res) {
         res.sendStatus(201)
     } catch (err) {
         if (err.code === "23505") return res.sendStatus(409)
-        res.status(400).send(err)
+        res.status(500).send(err)
     }
 }
 
